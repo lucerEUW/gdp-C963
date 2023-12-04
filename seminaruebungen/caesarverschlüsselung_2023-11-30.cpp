@@ -1,48 +1,56 @@
 #include<iostream>
 #include<string>
+#include<iomanip>
 
-char caesar(char in) {
-    //offset
-    int verschiebung = 3;
-    char out = in;
+//checking for upper
+bool isUpperCase(char c){
 
-    //deselecting any non-letter
-    if (!isalpha(in)) {
-        return in;
-    }
-
-    //selecting every letter
-    //uppercase chars
-    if (isupper(in)) {
-
-        out = 'A' + (in - 'A' + verschiebung) % 26;
-                    //in - & --gives position in our range
-                                //+our offshift
-                                            //mod(26) so it loops in just the alphabet
-            //+ A -- converting back to uppecase letter
-
-    //selectin lower case letters
-    } else if (islower(in)) {
-
-        out = 'a' + (in - 'a' + verschiebung) % 26;
-    }
-
-    return out;
+    return(c >= 'A' && c <= 'Z');
 }
-int main(){
 
-    //getting input
-	std::cout<<"enter string: ";
-	std::string inputString;
-	std::cin >> inputString;
-	std::cout<<"output string: ";
-	
-    //for chars of string
-	char out;
-	for(int i=0;i<inputString.size();i++){
-        //out chars
-		char out = caesar(inputString.at(i));
-		std::cout << out;
-	}
-    std::cout<<std::endl;
+//checking for lower
+bool isLowerCase(char c){
+
+    return(c >= 'a' && c <= 'z');
+}
+
+//ciphering char
+char cipherChar(char z, int key){
+
+    char cipher = z;
+
+    if( isUpperCase( z ) ){
+
+        cipher = ( z - 'A' + key ) % 26 + 'A';
+    }
+    if( isLowerCase( z ) ){
+
+        cipher = ( z - 'a' + key ) % 26 + 'a';
+    }else{
+
+        cipher = z;
+    }
+}
+
+//cipherfunc
+std::string cipherLine(std::string z, int key){
+
+    for(unsigned int i = 0 ; i < z.size() ; i++){
+        z.at(i) = cipherChar( z.at(i) , key );
+    }
+    return z;
+}
+
+int main(){ 
+
+    //get input and open setw
+    std::cout << std::setw(15) << "input: ";
+    std::string zeile;
+    std::getline( std::cin , zeile );
+
+    //output control
+    std::cout << std::setw(15) << "control: "<<zeile<<std::endl;
+
+    //output ciphered
+    std::cout << std::setw(15) << "ciphered: " << cipherLine( zeile, 3 ) << std::endl;
 }
