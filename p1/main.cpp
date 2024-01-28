@@ -23,22 +23,23 @@ bool Search(std::string searchedBook){
 
 int main(){
   std::string titel, autor, verlag;
-  int isbn;
+  int isbn, amount;
   double preis;
-  
-  
-  std::cout <<  "give dates of book to add [titel autor verlag isbn preis]: ";
-  std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis;
 
-  Book newBook(titel, autor,  verlag, isbn, preis);
-  newBook.Add();
-  std::cout <<  "added "  <<  titel <<  " to our list"  <<  std::endl;
-
-  std::cout <<  "with it there are  " <<  readCounter() <<  " books in the archive";
-
-  std::cout <<  "search for: ";
   std::string searchTerm;
-  std::cin  >>  searchTerm;
-  if(Search(searchTerm) ==  true){std::cout  <<  "found";}else{std::cout  <<  "not found";}
+
+      std::cout <<  "give dates of book to add [titel autor verlag isbn preis anzahl]: ";
+      std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis >>  amount;
+
+      Book newBook(titel, autor,  verlag, isbn, preis,  amount);
+      newBook.Add();
+      std::cout <<  "added "<< amount << " copies of "  <<  titel <<  " to our list"  <<  std::endl;
+
+      std::cout <<  "with it there are " <<  readCounter() <<  " books in the archive" <<  std::endl;
+    
+      std::cout <<  "search for: ";
+      std::cin  >>  searchTerm;
+      if(Search(searchTerm) ==  true){std::cout  <<  "found";}else{std::cout  <<  "not found";}
+    
   return 0;
 }
