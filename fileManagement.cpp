@@ -43,6 +43,30 @@ std::string readAmount(std::string targetFile)
   return  amount;
 }
 
+void UpdateAmountCounter(std::string targetFile,  int action, int amount)
+{    
+  std::ifstream amountIn("books/" + targetFile);
+  std::string bAmount;
+  std::getline(amountIn,  bAmount);
+
+  int bAmountI  = stoi(bAmount);
+    
+  switch(action){
+    case  0:
+      bAmountI  = bAmountI  - amount;
+      break;
+    case  1:
+      bAmountI  = bAmountI  + amount;
+      break;
+  }
+
+  std::ofstream  amountOut("books/" + targetFile);
+  amountOut  <<  bAmountI;
+
+  amountIn.close();
+  amountOut.close();
+}
+
 std::string readCounter()
 {
   std::ifstream counterIn("counter.txt");
@@ -53,6 +77,32 @@ std::string readCounter()
   counterIn.close();
   return firstLine;
 }
+
+void UpdateCounter(int action, int amount)
+{    
+  std::ifstream booksIn("counter.txt");
+  std::string firstLine;
+  std::getline(booksIn, firstLine);
+
+  int firstLineI  = stoi(firstLine);
+    
+  switch(action){
+    case  0:
+      firstLineI  = firstLineI  - amount;
+      break;
+    case  1:
+      firstLineI  = firstLineI  + amount;
+      break;
+  }
+
+  std::ofstream  booksOut("counter.txt");
+  booksOut  <<  firstLineI;
+
+  booksIn.close();
+  booksOut.close();
+}
+
+
 
 std::string toLower(std::string searchTerm)
 {
