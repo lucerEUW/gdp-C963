@@ -20,9 +20,7 @@ private:
   int amount;
   
   double  preis;
-  
-  void  UpdateCounter(int action, int amount);
-
+   
 public:
   Book( std::string titel,  std::string autor,  std::string verlag, long isbn, double  preis, int amount);
 
