@@ -10,32 +10,8 @@ Book::Book(std::string titel, std::string  autor, std::string  verlag,  long isb
   bookFile    = bookDirPath + manage::toLower(titel) + manage::toLower(autor) +  isbnString  + ".txt";
 }
 
-void Book::UpdateCounter(int action, int amount)
-{    
-  std::ifstream booksIn("counter.txt");
-  std::string firstLine;
-  std::getline(booksIn, firstLine);
-
-  int firstLineI  = stoi(firstLine);
-    
-  switch(action){
-    case  0:
-      firstLineI  = firstLineI  - amount;
-      break;
-    case  1:
-      firstLineI  = firstLineI  + amount;
-      break;
-  }
-
-  std::ofstream  booksOut("counter.txt");
-  booksOut  <<  firstLineI;
-
-  booksIn.close();
-  booksOut.close();
-}
-
 void Book::Add(){
-  UpdateCounter(1,  amount);
+  manage::UpdateCounter(1,  amount);
   std::ofstream  book(bookFile);
   book  <<  amount  <<  std::endl 
         <<  titel   <<  std::endl
@@ -48,9 +24,26 @@ void Book::Add(){
 
 void Book::Buy(std::string bookToBuy)
 {
+  char yn;
+  int amount;
+
   if(std::stoi(manage::readAmount(bookToBuy))  > 0)
   {
-    std::cout <<  "there are "  <<  manage::readAmount(bookToBuy) <<  " copies left" <<  std::endl <<  "do you want to buy this book?[y/n] ";
+    std::cout <<  "there are "  <<  manage::readAmount(bookToBuy) <<  " copies left" <<  std::endl
+              <<  "do you want to buy this book?[y/n amount] "  <<  std::endl
+              <<  "=========================================================" <<  std::endl;
+    std::cin  >>  yn  >>  amount;
+
+    switch(yn)
+    {
+      case  'y':
+        std::cout <<  "total price: " <<  amount  * std::stod(manage::getExactLine(bookToBuy,  6));
+        manage::UpdateCounter(0,  amount);
+        break;
+      case  'n':
+        std::cout <<  "purchase canceled";
+        break;
+    }
   }else{
     std::cout <<  "no copies left!";
   }
