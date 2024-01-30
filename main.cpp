@@ -8,20 +8,26 @@ int main()
   long    isbn;
   int     amount;
   double  preis;
+  char    choice;
 
+  std::cout <<  "Buecherverwaltung" <<  std::endl
+            <<  "=========================================================" << std::endl
+            <<  "s:search/buy for books  a:add books"  <<  std::endl
+            <<  "=========================================================" << std::endl;
+  std::cin  >>  choice;
 
-  std::cout <<  "give dates of book to add [titel autor verlag isbn preis anzahl]: ";
-  std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis >>  amount;
+  switch (choice) {
+    case  's':
+      manage::Search();
+      break;
+    case  'a':
+      std::cout <<  "give dates of book to add [titel autor verlag isbn preis anzahl]: ";
+      std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis >>  amount;
 
-  Book newBook(titel, autor,  verlag, isbn, preis,  amount);
-  newBook.Add();
-  std::cout <<  "added "<< amount << " copies of "  <<  titel <<  " to our list"  <<  std::endl;
-
-  std::cout <<  "with it there are " <<  manage::readCounter() <<  " books in the archive" <<  std::endl;
-/*   
-  std::cout <<  "search for: ";
-  std::cin  >>  searchTerm;
-  manage::Search(searchTerm);
-*/
+      break;
+    default:
+      std::cout <<  "invalid";
+      break;
+  }
   return 0;
 }
