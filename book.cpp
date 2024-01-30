@@ -46,3 +46,12 @@ void Book::Add(){
   book.close();
 }
 
+void Book::Buy(std::string bookToBuy)
+{
+  if(std::stoi(manage::readAmount(bookToBuy))  > 0)
+  {
+    std::cout <<  "there are "  <<  manage::readAmount(bookToBuy) <<  " copies left" <<  std::endl <<  "do you want to buy this book?[y/n] ";
+  }else{
+    std::cout <<  "no copies left!";
+  }
+}
