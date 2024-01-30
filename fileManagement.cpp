@@ -3,33 +3,32 @@
 
 namespace manage{
 
-std::string getExactLine(std::string filename,  int index)
+std::string getExactLine(const  std::string& filename,  int lineNumber)
 {
-  std::ifstream file(filename);
-
+  std::ifstream file("books/"  + filename);
   std::string outputLine;
-  int readIndex  = 0;
-
-  while(std::getline(file,outputLine))
+  
+  for(int i = 0;i < lineNumber  -1; i++)
   {
-    if(readIndex ==  index)
+    if(!std::getline(file,  outputLine))
     {
-      file.close();
-      return  outputLine;
+      return  "";
     }
-    readIndex++;
   }
-  return  "";
+
+  std::getline(file,  outputLine);
+  file.close();
+  return  outputLine;
 }
 
 void displayDetails(std::string filename)
 {
   std::cout <<  "further details  :"   <<  std::endl
-            <<  "title            :"   <<  getExactLine(filename,  1) <<  std::endl
-            <<  "author           :"   <<  getExactLine(filename,  2) <<  std::endl
-            <<  "published by     :"   <<  getExactLine(filename,  3) <<  std::endl
-            <<  "isbn             :"   <<  getExactLine(filename,  4) <<  std::endl
-            <<  "price            :"   <<  getExactLine(filename,  5) <<  std::endl
+            <<  "title            :"   <<  getExactLine(filename,  2) <<  std::endl
+            <<  "author           :"   <<  getExactLine(filename,  3) <<  std::endl
+            <<  "published by     :"   <<  getExactLine(filename,  4) <<  std::endl
+            <<  "isbn             :"   <<  getExactLine(filename,  5) <<  std::endl
+            <<  "price            :"   <<  getExactLine(filename,  6) <<  std::endl
             <<  "========================================================="  <<  std::endl;
 }
 
