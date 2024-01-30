@@ -27,7 +27,7 @@ public:
   Book( std::string titel,  std::string autor,  std::string verlag, long isbn, double  preis, int amount);
 
   void  Add();
-  void  Buy();
+  static void  Buy(std::string bookToBuy);
 };
 
 #endif
