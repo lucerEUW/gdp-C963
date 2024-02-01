@@ -23,12 +23,12 @@ std::string getExactLine(const  std::string& filename,  int lineNumber)
 
 void displayDetails(std::string filename)
 {
-  std::cout <<  "further details  :"   <<  std::endl
-            <<  "title            :"   <<  getExactLine(filename,  2) <<  std::endl
-            <<  "author           :"   <<  getExactLine(filename,  3) <<  std::endl
-            <<  "published by     :"   <<  getExactLine(filename,  4) <<  std::endl
-            <<  "isbn             :"   <<  getExactLine(filename,  5) <<  std::endl
-            <<  "price            :"   <<  getExactLine(filename,  6) <<  std::endl
+  std::cout << std::setw(19)  <<  std::left <<  "further details   :"   <<  std::endl
+            << std::setw(19)  <<  std::left <<  "title             :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  2) <<  std::endl
+            << std::setw(19)  <<  std::left <<  "author            :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  3) <<  std::endl
+            << std::setw(19)  <<  std::left <<  "published by      :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  4) <<  std::endl
+            << std::setw(19)  <<  std::left <<  "isbn              :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  5) <<  std::endl
+            << std::setw(19)  <<  std::left <<  "price             :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  6) <<  std::endl
             <<  "========================================================="  <<  std::endl;
 }
 
@@ -43,13 +43,9 @@ std::string readAmount(std::string targetFile)
   return  amount;
 }
 
-void UpdateAmountCounter(std::string targetFile,  int action, int amount)
-{    
-  std::ifstream amountIn("books/" + targetFile);
-  std::string bAmount;
-  std::getline(amountIn,  bAmount);
-
-  int bAmountI  = stoi(bAmount);
+void UpdateAmount(std::string targetFile,  int action, int amount)
+{ 
+  int bAmountI  = stoi(readAmount(targetFile));
     
   switch(action){
     case  0:
@@ -60,31 +56,20 @@ void UpdateAmountCounter(std::string targetFile,  int action, int amount)
       break;
   }
 
-  std::ofstream  amountOut("books/" + targetFile);
+  std::ofstream  amountOut("books/" + targetFile, std::ios::in  | std::ios::out);
   amountOut  <<  bAmountI;
-
-  amountIn.close();
   amountOut.close();
 }
 
 std::string readCounter()
 {
-  std::ifstream counterIn("counter.txt");
-  
-  std::string   firstLine;
-  std::getline  (counterIn,  firstLine);
- 
-  counterIn.close();
-  return firstLine;
+  std::string count = readAmount("../counter.txt");
+  return count;
 }
 
 void UpdateCounter(int action, int amount)
 {    
-  std::ifstream booksIn("counter.txt");
-  std::string firstLine;
-  std::getline(booksIn, firstLine);
-
-  int firstLineI  = stoi(firstLine);
+  int firstLineI  = stoi(readCounter());
     
   switch(action){
     case  0:
@@ -97,8 +82,6 @@ void UpdateCounter(int action, int amount)
 
   std::ofstream  booksOut("counter.txt");
   booksOut  <<  firstLineI;
-
-  booksIn.close();
   booksOut.close();
 }
 
@@ -134,7 +117,7 @@ void Search()
     if(filename.find(searchTerm)  !=  std::string::npos)
     {
       foundFileName = filename;
-      std::cout <<  foundFileName  <<  std::endl;
+      std::cout << std::setw(19)  <<  std::left <<  getExactLine(filename,  2)  << std::setw(19)  <<  std::left  <<  getExactLine(filename,  3)  << std::setw(19)  <<  std::right  <<  getExactLine(filename,  5)  <<  std::endl;
       booksFound++;
     }
   }
