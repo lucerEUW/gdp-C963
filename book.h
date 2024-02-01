@@ -26,6 +26,7 @@ public:
 
   void  Add();
   static void  Buy(std::string bookToBuy);
+  static void  Restock(std::string bookToRestock);
 };
 
 #endif
