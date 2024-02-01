@@ -9,25 +9,36 @@ int main()
   int     amount;
   double  preis;
   char    choice;
+  bool contRunning  = true;
 
-  std::cout <<  "Buecherverwaltung" <<  std::endl
-            <<  "=========================================================" << std::endl
-            <<  "s:search/buy for books  a:add books"  <<  std::endl
-            <<  "=========================================================" << std::endl;
-  std::cin  >>  choice;
+  while(contRunning){
+    std::cout <<  "=========================================================" << std::endl
+              <<  "Buecherverwaltung" <<  std::endl
+              <<  "=========================================================" << std::endl
+              <<  std::setw(25) <<  std::left <<  "s:search/restock/buy"  <<  std::setw(13) << std::right <<"a:add new  q:quit"  <<  std::setw(5) << std::right <<  "[" <<  manage::readCounter()  <<  " copies]"  <<  std::endl
+              <<  "=========================================================" << std::endl;
+    std::cin  >>  choice;
 
-  switch (choice) {
-    case  's':
-      manage::Search();
-      break;
-    case  'a':
-      std::cout <<  "give dates of book to add [titel autor verlag isbn preis anzahl]: ";
-      std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis >>  amount;
-
-      break;
-    default:
-      std::cout <<  "invalid";
-      break;
+    switch (choice) {
+      case  's':
+        manage::Search();
+        break;
+      case  'a':
+        {
+          std::cout <<  "give dates of book to add [titel autor verlag isbn preis anzahl]: ";
+          std::cin  >>  titel >>  autor >>  verlag  >>  isbn  >>  preis >>  amount;
+          Book newBook(titel, autor, verlag, isbn, preis,  amount);
+          newBook.Add();
+          break;
+        }
+      case  'q':
+        std::cout <<  "quitting..." <<  std::endl;
+        contRunning = false;
+        break;
+      default:
+        std::cout <<  "invalid";
+        break;
+    }
   }
   return 0;
 }
