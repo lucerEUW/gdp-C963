@@ -12,6 +12,13 @@ Book::Book(std::string titel, std::string  autor, std::string  verlag,  long isb
 
 void Book::Add(){
   manage::UpdateCounter(1,  amount);
+
+  if(std::filesystem::exists(bookFile))
+  {
+    int oldAmount =  stoi(manage::readAmount(bookFile));
+    amount  = oldAmount + amount;
+  }
+
   std::ofstream  book(bookFile);
   book  <<  amount  <<  std::endl 
         <<  titel   <<  std::endl
@@ -25,26 +32,47 @@ void Book::Add(){
 void Book::Buy(std::string bookToBuy)
 {
   char yn;
-  int amount;
-
+  std::string amountStr;
   if(std::stoi(manage::readAmount(bookToBuy))  > 0)
   {
     std::cout <<  "there are "  <<  manage::readAmount(bookToBuy) <<  " copies left" <<  std::endl
-              <<  "do you want to buy this book?[y/n amount] "  <<  std::endl
+              <<  std::setw(29) <<  "do you want to buy this book?" <<  std::setw(29) <<  std::right  <<  "[y/n][r:restock] "  <<  std::endl
               <<  "=========================================================" <<  std::endl;
-    std::cin  >>  yn  >>  amount;
+    std::cin  >>  yn;
 
     switch(yn)
     {
       case  'y':
+        {
+        std::cout <<  "how many copies?: ";
+        std::cin  >>  amountStr;
+        int amount  = std::stoi(amountStr);
         std::cout <<  "total price: " <<  amount  * std::stod(manage::getExactLine(bookToBuy,  6));
         manage::UpdateCounter(0,  amount);
+        manage::UpdateAmount(bookToBuy, 0,  amount);
         break;
+        }
       case  'n':
+        {
         std::cout <<  "purchase canceled";
         break;
+        }
+      case  'r':
+        {
+        Book::Restock(bookToBuy);
+        break;
+        }
     }
   }else{
     std::cout <<  "no copies left!";
   }
+}
+
+void Book::Restock(std::string bookToRestock)
+{
+  int amount;
+  std::cout <<  "how many copies to add?: ";
+  std::cin  >>  amount;
+  manage::UpdateCounter(1,  amount);
+  manage::UpdateAmount(bookToRestock, 1,  amount);
 }
