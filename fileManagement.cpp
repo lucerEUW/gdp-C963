@@ -28,7 +28,7 @@ void displayDetails(std::string filename)
             << std::setw(19)  <<  std::left <<  "author            :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  3) <<  std::endl
             << std::setw(19)  <<  std::left <<  "published by      :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  4) <<  std::endl
             << std::setw(19)  <<  std::left <<  "isbn              :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  5) <<  std::endl
-            << std::setw(19)  <<  std::left <<  "price             :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  6) <<  std::endl
+            << std::setw(19)  <<  std::left <<  "price [in euros]  :"   << std::setw(38)  <<  std::right <<  getExactLine(filename,  6) <<  std::endl
             <<  "========================================================="  <<  std::endl;
 }
 
