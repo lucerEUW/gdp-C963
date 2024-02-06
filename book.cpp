@@ -12,13 +12,6 @@ Book::Book(std::string titel, std::string  autor, std::string  verlag,  long isb
 
 void Book::Add(){
   manage::UpdateCounter(1,  amount);
-
-  if(std::filesystem::exists(bookFile))
-  {
-    int oldAmount =  stoi(manage::readAmount(bookFile));
-    amount  = oldAmount + amount;
-  }
-
   std::ofstream  book(bookFile);
   book  <<  amount  <<  std::endl 
         <<  titel   <<  std::endl
@@ -47,14 +40,20 @@ void Book::Buy(std::string bookToBuy)
         std::cout <<  "how many copies?: ";
         std::cin  >>  amountStr;
         int amount  = std::stoi(amountStr);
-        std::cout <<  "total price: " <<  amount  * std::stod(manage::getExactLine(bookToBuy,  6));
-        manage::UpdateCounter(0,  amount);
-        manage::UpdateAmount(bookToBuy, 0,  amount);
+
+        if(amount <= std::stoi(manage::readAmount(bookToBuy)))
+        {
+          std::cout <<  "total price: " <<  amount  * std::stod(manage::getExactLine(bookToBuy,  6))  <<  std::endl;
+          manage::UpdateCounter(0,  amount);
+          manage::UpdateAmount(bookToBuy, 0,  amount);
+        }else {
+          std::cout <<  "not enough copies!"  <<  std::endl; 
+        }
         break;
         }
       case  'n':
         {
-        std::cout <<  "purchase canceled";
+        std::cout <<  "purchase canceled" <<  std::endl;
         break;
         }
       case  'r':
@@ -64,7 +63,7 @@ void Book::Buy(std::string bookToBuy)
         }
     }
   }else{
-    std::cout <<  "no copies left!";
+    std::cout <<  "no copies left!" <<  std::endl;
   }
 }
 
