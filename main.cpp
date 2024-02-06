@@ -36,7 +36,7 @@ int main()
         contRunning = false;
         break;
       default:
-        std::cout <<  "invalid";
+        std::cout <<  "invalid" <<  std::endl;
         break;
     }
   }
