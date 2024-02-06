@@ -43,10 +43,9 @@ std::string readAmount(std::string targetFile)
   return  amount;
 }
 
-void UpdateAmount(std::string targetFile,  int action, int amount)
+void UpdateAmount(const std::string& targetFile,  int action,const int amount)
 { 
-  int bAmountI  = stoi(readAmount(targetFile));
-    
+  int bAmountI  = stoi(readAmount(targetFile));  
   switch(action){
     case  0:
       bAmountI  = bAmountI  - amount;
@@ -55,7 +54,6 @@ void UpdateAmount(std::string targetFile,  int action, int amount)
       bAmountI  = bAmountI  + amount;
       break;
   }
-
   std::ofstream  amountOut("books/" + targetFile, std::ios::in  | std::ios::out);
   amountOut  <<  bAmountI;
   amountOut.close();
