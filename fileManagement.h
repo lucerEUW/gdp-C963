@@ -1,13 +1,14 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
-#include<string>
-#include<fstream>
-#include<cctype>
-#include<algorithm>
-#include<limits>
-#include<iomanip>
-#include"book.h"
+#include <string>
+#include <fstream>
+#include <cctype>
+#include <algorithm>
+#include <limits>
+#include <iomanip>
+#include <vector>
+#include "book.h"
 
 namespace manage
 {
