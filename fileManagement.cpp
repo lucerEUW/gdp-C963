@@ -43,20 +43,58 @@ std::string readAmount(std::string targetFile)
   return  amount;
 }
 
-void UpdateAmount(const std::string& targetFile,  int action,const int amount)
+void UpdateAmount(std::string targetFile,  int action, int amount)
 { 
   int bAmountI  = stoi(readAmount(targetFile));  
   switch(action){
     case  0:
-      bAmountI  = bAmountI  - amount;
+      bAmountI  -= amount;
       break;
     case  1:
-      bAmountI  = bAmountI  + amount;
+      bAmountI  += amount;
       break;
   }
-  std::ofstream  amountOut("books/" + targetFile, std::ios::in  | std::ios::out);
-  amountOut  <<  bAmountI;
-  amountOut.close();
+  std::string newString = std::to_string(bAmountI);
+  
+  std::fstream file("books/"  + targetFile, std::ios::in | std::ios::out);
+  std::vector<std::string> lines;
+
+  if (file.is_open()) 
+  {
+    std::string line;
+    while (std::getline(file, line)) 
+    {
+      lines.push_back(line);
+    }
+      file.clear(); // Clear any error flags.
+
+     if (!lines.empty()) 
+     {
+        size_t oldLineLength = lines[0].size();
+        size_t newLineLength = newString.size();
+
+        file.seekp(0);
+
+        if (newLineLength <= oldLineLength)
+       {
+          file << newString;
+          file << std::string(oldLineLength - newLineLength, ' ');
+       } else 
+       {
+          file << newString;
+
+          for (size_t i = 1; i < lines.size(); ++i) 
+           {
+             file << '\n' << lines[i];
+           }
+       }
+      } else 
+      {
+        std::cerr << "Error: Empty file." << std::endl;
+      }
+    } else {
+        std::cerr << "Error: Unable to open file." << std::endl;
+    }
 }
 
 std::string readCounter()
