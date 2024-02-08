@@ -38,7 +38,7 @@ namespace manage
 					  << "title             :" << std::setw(38) << std::right << getExactLine(filename, 2) << std::endl << std::setw(19)
 					  << std::left << "author            :" << std::setw(38) << std::right << getExactLine(filename, 3) << std::endl
 					  << std::setw(19) << std::left << "published by      :" << std::setw(38) << std::right << getExactLine(filename, 4)
-					  << std::endl << std::setw(19) << std::left << "_isbn              :" << std::setw(38) << std::right
+					  << std::endl << std::setw(19) << std::left << "isbn              :" << std::setw(38) << std::right
 					  << getExactLine(filename, 5) << std::endl << std::setw(19) << std::left << "price [in euros]  :" << std::setw(38)
 					  << std::right << getExactLine(filename, 6) << std::endl << "========================================================="
 					  << std::endl;
@@ -68,6 +68,46 @@ namespace manage
 		}
 	}
 
+  void writeAmountToFile(const std::string &targetFile, const std::string &newString)
+  {
+		std::fstream file("books/" + targetFile, std::ios::in | std::ios::out);
+		if (!file.is_open())
+		{
+			throw std::runtime_error("Failed to open file for updating: " + targetFile);
+		}
+		std::vector<std::string> lines;
+		std::string line;
+		while (std::getline(file, line))
+		{
+			lines.push_back(line);
+		}
+		file.clear();
+		if (!lines.empty())
+		{
+			size_t oldLineLength = lines[0].size();
+			size_t newLineLength = newString.size();
+			file.seekp(0);
+			if (newLineLength <= oldLineLength)
+			{
+				file << newString;
+				file << std::string(oldLineLength - newLineLength, ' ');
+			}
+			else
+			{
+				file << newString;
+				for (size_t i = 1; i < lines.size(); ++i)
+				{
+					file << '\n' << lines[i];
+				}
+			}
+  	}
+		else
+		{
+			std::cerr << "Error: Empty file." << std::endl;
+		}
+		file.close(); 
+  }
+
 	void UpdateAmount(const std::string &targetFile, int action, int amount)
 	{
 		try
@@ -82,43 +122,7 @@ namespace manage
 					break;
 			}
 
-			std::string newString = std::to_string(bAmountI);
-			std::fstream file("books/" + targetFile, std::ios::in | std::ios::out);
-			if (!file.is_open())
-			{
-				throw std::runtime_error("Failed to open file for updating: " + targetFile);
-			}
-			std::vector<std::string> lines;
-			std::string line;
-			while (std::getline(file, line))
-			{
-				lines.push_back(line);
-			}
-			file.clear();
-			if (!lines.empty())
-			{
-				size_t oldLineLength = lines[0].size();
-				size_t newLineLength = newString.size();
-				file.seekp(0);
-				if (newLineLength <= oldLineLength)
-				{
-					file << newString;
-					file << std::string(oldLineLength - newLineLength, ' ');
-				}
-				else
-				{
-					file << newString;
-					for (size_t i = 1; i < lines.size(); ++i)
-					{
-						file << '\n' << lines[i];
-					}
-				}
-			}
-			else
-			{
-				std::cerr << "Error: Empty file." << std::endl;
-			}
-			file.close();
+			writeAmountToFile(targetFile, std::to_string(bAmountI));
 		} catch (const std::exception &ex)
 		{
 			std::cerr << "Error in UpdateAmount function: " << ex.what() << std::endl;
@@ -231,7 +235,6 @@ namespace manage
 			else
 			{
 				std::cout << booksFound << " different results found. please specify further!" << std::endl;
-				Search();
 			}
 		} catch (const std::exception &ex)
 		{
