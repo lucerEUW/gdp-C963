@@ -2,13 +2,7 @@
 #include"../include/book.h"
 #include"../include/fileManagement.h"
 
-Book::Book(const std::string &titel, const std::string &autor, std::string verlag, long isbn, double preis, int amount) : _titel(titel),
-																														  _autor(autor),
-																														  _verlag(std::move(
-																																  verlag)),
-																														  _isbn(isbn),
-																														  _preis(preis),
-																														  _amount(amount)
+Book::Book(const std::string &titel, const std::string &autor, std::string verlag, long isbn, double preis, int amount) : _titel(titel), _autor(autor), _verlag(std::move(verlag)), _isbn(isbn), _preis(preis), _amount(amount)
 {
 	try
 	{
