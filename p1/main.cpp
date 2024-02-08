@@ -28,7 +28,7 @@ int main()
 				break;
 			case 'a':
 			{
-				std::cout << "give data for book to add [_titel _autor _verlag _isbn _preis anzahl]: ";
+				std::cout << "give data for book to add" << std::endl << "[titel autor verlag isbn preis anzahl]: ";
 				std::cin >> titel >> autor >> verlag >> isbn >> preis >> amount;
 				Book newBook(titel, autor, verlag, isbn, preis, amount);
 				newBook.Add();
