@@ -1,0 +1,205 @@
+Buechermanager:
+
+-startmenue:
+
+=========================================================
+Bookmanager                                  [948 copies]
+=========================================================
+s:search/restock/buy          a:add new            q:quit
+=========================================================
+
+-q zum schliessen
+
+=========================================================
+Bookmanager                                  [948 copies]
+=========================================================
+s:search/restock/buy          a:add new            q:quit
+=========================================================
+q
+quitting...
+
+-s zum suchen nach Titel/Autor/ISBN und anschliessendem nachkaufen und kaufen
+
+  =========================================================
+  Bookmanager                                  [948 copies]
+  =========================================================
+  s:search/restock/buy          a:add new            q:quit
+  =========================================================
+  s
+  search for book: the
+  =========================================================
+  TheSecretHistory   DonnaTartt               9781400031702
+  TheSunAlsoRises    ErnestHemingway          9780684830513
+  TheBellJar         SylviaPlath              9780060174903
+  TheHungergames     SuzanneCollins           9780439023481
+  TheHobbit          J.R.R.Tolkien            9780547928227
+  TheCatcherintheRye J.D.Salinger             9780316769488
+  TheGreatGatsby     F.ScottFitzgerald        9780743273565
+  TheAlchemist       PauloCoelho              9780061122415
+  LordOfTheFlies     WilliamGolding           9780571191475
+  =========================================================
+  9 different results found. please specify further!
+  =========================================================
+
+  -zeigt alle Buecher in denen Suchstring vorkommt
+  -weiter spezifizieren bis nur ein Buch auf Suchanfrage passt
+
+  =========================================================
+  Bookmanager                                  [948 copies]
+  =========================================================
+  s:search/restock/buy          a:add new            q:quit
+  =========================================================
+  s
+  search for book: theh
+  =========================================================
+  TheHungergames     SuzanneCollins           9780439023481
+  TheHobbit          J.R.R.Tolkien            9780547928227
+  =========================================================
+  2 different results found. please specify further!
+  =========================================================
+  Bookmanager                                  [948 copies]
+  =========================================================
+  s:search/restock/buy          a:add new            q:quit
+  =========================================================
+  s
+  search for book: thehunger
+  =========================================================
+  TheHungergames     SuzanneCollins           9780439023481
+  =========================================================
+  further details   :
+  title             :                        TheHungergames
+  author            :                        SuzanneCollins
+  published by      :                       Scholasticpress
+  isbn              :                         9780439023481
+  price [in euros]  :                                  8.75
+  =========================================================
+  there are 210 copies left
+  do you want to buy this book?            [y/n][r:restock]
+  =========================================================
+
+  -zeigt details an und wie viele Ausgaben noch verfuegbar sind
+
+    -y um das buch zu kaufen - fragt wie viele Ausgaben man kaufen will
+
+    =========================================================
+    Bookmanager                                  [948 copies]
+    =========================================================
+    s:search/restock/buy          a:add new            q:quit
+    =========================================================
+    s
+    search for book: thehun
+    =========================================================
+    TheHungergames     SuzanneCollins           9780439023481
+    =========================================================
+    further details   :
+    title             :                        TheHungergames
+    author            :                        SuzanneCollins
+    published by      :                       Scholasticpress
+    isbn              :                         9780439023481
+    price [in euros]  :                                  8.75
+    =========================================================
+    there are 210 copies left
+    do you want to buy this book?            [y/n][r:restock]
+    =========================================================
+    y
+    how many copies?: 20
+    total price: 175
+
+    -gibt den gesamten preis an
+
+      !sollten nicht genug Buecher da sein so wird dies ausgegeben
+
+      =========================================================
+      Bookmanager                                  [948 copies]
+      =========================================================
+      s:search/restock/buy          a:add new            q:quit
+      =========================================================
+      s
+      search for book: thehu
+      =========================================================
+      TheHungergames     SuzanneCollins           9780439023481
+      =========================================================
+      further details   :
+      title             :                        TheHungergames
+      author            :                        SuzanneCollins
+      published by      :                       Scholasticpress
+      isbn              :                         9780439023481
+      price [in euros]  :                                  8.75
+      =========================================================
+      there are 210 copies left
+      do you want to buy this book?            [y/n][r:restock]
+      =========================================================
+      y
+      how many copies?: 211
+      not enough copies!
+
+
+    -r um nachzukaufen
+
+    =========================================================
+    Bookmanager                                  [928 copies]
+    =========================================================
+    s:search/restock/buy          a:add new            q:quit
+    =========================================================
+    s
+    search for book: thehun
+    =========================================================
+    TheHungergames     SuzanneCollins           9780439023481
+    =========================================================
+    further details   :
+    title             :                        TheHungergames
+    author            :                        SuzanneCollins
+    published by      :                       Scholasticpress
+    isbn              :                         9780439023481
+    price [in euros]  :                                  8.75
+    =========================================================
+    there are 190 copies left
+    do you want to buy this book?            [y/n][r:restock]
+    =========================================================
+    r
+    how many copies to add?: 20
+
+
+    -n fuehrt zuruek zum Hauptmenue
+
+    =========================================================
+    Bookmanager                                  [948 copies]
+    =========================================================
+    s:search/restock/buy          a:add new            q:quit
+    =========================================================
+    s
+    search for book: thehun
+    =========================================================
+    TheHungergames     SuzanneCollins           9780439023481
+    =========================================================
+    further details   :
+    title             :                        TheHungergames
+    author            :                        SuzanneCollins
+    published by      :                       Scholasticpress
+    isbn              :                         9780439023481
+    price [in euros]  :                                  8.75
+    =========================================================
+    there are 210 copies left
+    do you want to buy this book?            [y/n][r:restock]
+    =========================================================
+    n
+    purchase canceled
+    =========================================================
+    Bookmanager                                  [948 copies]
+    =========================================================
+    s:search/restock/buy          a:add new            q:quit
+    =========================================================
+
+
+-a zum hinzufuegen neuer Buecher
+
+=========================================================
+Bookmanager                                  [948 copies]
+=========================================================
+s:search/restock/buy          a:add new            q:quit
+=========================================================
+a
+give data for book to add
+[titel autor verlag isbn preis anzahl]:
+
+-Buecher bekommen beim hinzufuegen ihre eine .txt datei im books/ directory in der alle Details abgespeichert werden

@@ -1,0 +1,1 @@
+clang++ main.cpp src/book.cpp src/fileManagement.cpp -o bin/exe -std=c++17 -Wall
