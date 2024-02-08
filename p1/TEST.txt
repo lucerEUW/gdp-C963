@@ -202,4 +202,5 @@ a
 give data for book to add
 [titel autor verlag isbn preis anzahl]:
 
--Buecher bekommen beim hinzufuegen ihre eine .txt datei im books/ directory in der alle Details abgespeichert werden
+-Buecher bekommen beim hinzufuegen ihre eine .txt datei im books/ directory in der alle Details abgespeichert werden. 
+-Sollte es (wie im Falle der Prüfung) noch keinen books ordner geben wird dieser erstellt.
