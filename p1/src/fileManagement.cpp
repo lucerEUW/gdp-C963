@@ -1,244 +1,112 @@
 #include<iostream>
+#include <utility>
+#include"../include/book.h"
 #include"../include/fileManagement.h"
 
-namespace manage
+Book::Book(const std::string &titel, const std::string &autor, std::string verlag, long isbn, double preis, int amount) : _titel(titel),
+																														  _autor(autor),
+																														  _verlag(std::move(
+																																  verlag)),
+																														  _isbn(isbn),
+																														  _preis(preis),
+																														  _amount(amount)
 {
-	std::string getExactLine(const std::string &filename, int lineNumber)
+	try
 	{
-		try
+		std::string bookDirPath = "books/";
+		std::string isbnString = std::to_string(isbn);
+		_bookFile = bookDirPath + manage::toLower(titel) + manage::toLower(autor) + isbnString + ".txt";
+	} catch (const std::exception &ex)
+	{
+		std::cerr << "Error in Book constructor: " << ex.what() << std::endl;
+	}
+}
+
+void Book::Add()
+{
+	try
+	{
+		manage::UpdateCounter(1, _amount);
+		std::ofstream book(_bookFile);
+		if (!book.is_open())
 		{
-			std::ifstream file("books/" + filename);
-			if (!file.is_open())
+			throw std::runtime_error("Failed to open file for writing.");
+		}
+		book << _amount << std::endl << _titel << std::endl << _autor << std::endl << _verlag << std::endl << _isbn << std::endl << _preis
+			 << std::endl;
+		book.close();
+	} catch (const std::exception &ex)
+	{
+		std::cerr << "Error in Add function: " << ex.what() << std::endl;
+	}
+}
+
+void Book::Buy(const std::string &bookToBuy)
+{
+	try
+	{
+		char yn;
+		std::string amountStr;
+		if (std::stoi(manage::readAmount(bookToBuy)) > 0)
+		{
+			std::cout << "there are " << manage::readAmount(bookToBuy) << " copies left" << std::endl << std::setw(29)
+					  << "do you want to buy this book?" << std::setw(29) << std::right << "[y/n][r:restock] " << std::endl
+					  << "=========================================================" << std::endl;
+			std::cin >> yn;
+
+			switch (yn)
 			{
-				throw std::runtime_error("Failed to open file: " + filename);
-			}
-			std::string outputLine;
-			for (int i = 0; i < lineNumber - 1; i++)
-			{
-				if (!std::getline(file, outputLine))
+				case 'y':
 				{
-					return "";
+					std::cout << "how many copies?: ";
+					std::cin >> amountStr;
+					int amount = std::stoi(amountStr);
+
+					if (amount <= std::stoi(manage::readAmount(bookToBuy)))
+					{
+						std::cout << "total price: " << amount * std::stod(manage::getExactLine(bookToBuy, 6)) << std::endl;
+						manage::UpdateCounter(0, amount);
+						manage::UpdateAmount(bookToBuy, 0, amount);
+					}
+					else
+					{
+						std::cout << "not enough copies!" << std::endl;
+					}
+					break;
+				}
+				case 'n':
+				{
+					std::cout << "purchase canceled" << std::endl;
+					break;
+				}
+				case 'r':
+				{
+					Book::Restock(bookToBuy);
+					break;
 				}
 			}
-			std::getline(file, outputLine);
-			file.close();
-			return outputLine;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in getExactLine function: " << ex.what() << std::endl;
-			return "";
 		}
-	}
-
-	void displayDetails(const std::string &filename)
-	{
-		try
-		{
-			std::cout << std::setw(19) << std::left << "further details   :" << std::endl << std::setw(19) << std::left
-					  << "title             :" << std::setw(38) << std::right << getExactLine(filename, 2) << std::endl << std::setw(19)
-					  << std::left << "author            :" << std::setw(38) << std::right << getExactLine(filename, 3) << std::endl
-					  << std::setw(19) << std::left << "published by      :" << std::setw(38) << std::right << getExactLine(filename, 4)
-					  << std::endl << std::setw(19) << std::left << "isbn              :" << std::setw(38) << std::right
-					  << getExactLine(filename, 5) << std::endl << std::setw(19) << std::left << "price [in euros]  :" << std::setw(38)
-					  << std::right << getExactLine(filename, 6) << std::endl << "========================================================="
-					  << std::endl;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in displayDetails function: " << ex.what() << std::endl;
-		}
-	}
-
-	std::string readAmount(const std::string &targetFile)
-	{
-		try
-		{
-			std::ifstream amountIn("books/" + targetFile);
-			if (!amountIn.is_open())
-			{
-				throw std::runtime_error("Failed to open file for reading: " + targetFile);
-			}
-			std::string amount;
-			std::getline(amountIn, amount);
-			amountIn.close();
-			return amount;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in readAmount function: " << ex.what() << std::endl;
-			return "";
-		}
-	}
-
-  void writeAmountToFile(const std::string &targetFile, const std::string &newString)
-  {
-		std::fstream file("books/" + targetFile, std::ios::in | std::ios::out);
-		if (!file.is_open())
-		{
-			throw std::runtime_error("Failed to open file for updating: " + targetFile);
-		}
-		std::vector<std::string> lines;
-		std::string line;
-		while (std::getline(file, line))
-		{
-			lines.push_back(line);
-		}
-		file.clear();
-		if (!lines.empty())
-		{
-			size_t oldLineLength = lines[0].size();
-			size_t newLineLength = newString.size();
-			file.seekp(0);
-			if (newLineLength <= oldLineLength)
-			{
-				file << newString;
-				file << std::string(oldLineLength - newLineLength, ' ');
-			}
-			else
-			{
-				file << newString;
-				for (size_t i = 1; i < lines.size(); ++i)
-				{
-					file << '\n' << lines[i];
-				}
-			}
-  	}
 		else
 		{
-			std::cerr << "Error: Empty file." << std::endl;
+			std::cout << "no copies left!" << std::endl;
 		}
-		file.close(); 
-  }
-
-	void UpdateAmount(const std::string &targetFile, int action, int amount)
+	} catch (const std::exception &ex)
 	{
-		try
-		{
-			int bAmountI = std::stoi(readAmount(targetFile));
-			switch (action) {
-				case 0:
-					bAmountI -= amount;
-					break;
-				case 1:
-					bAmountI += amount;
-					break;
-			}
-
-			writeAmountToFile(targetFile, std::to_string(bAmountI));
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in UpdateAmount function: " << ex.what() << std::endl;
-		}
+		std::cerr << "Error in Buy function: " << ex.what() << std::endl;
 	}
+}
 
-	std::string readCounter()
+void Book::Restock(const std::string &bookToRestock)
+{
+	try
 	{
-		try
-		{
-			std::string count;
-			std::ifstream booksIn("counter.txt");
-			if (!booksIn.is_open())
-			{
-				throw std::runtime_error("Failed to open counter file for reading.");
-			}
-			std::getline(booksIn, count);
-			booksIn.close();
-			return count;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in readCounter function: " << ex.what() << std::endl;
-			return "";
-		}
-	}
-
-	void UpdateCounter(int action, int amount)
+		int amount;
+		std::cout << "how many copies to add?: ";
+		std::cin >> amount;
+		manage::UpdateCounter(1, amount);
+		manage::UpdateAmount(bookToRestock, 1, amount);
+	} catch (const std::exception &ex)
 	{
-		try
-		{
-			int firstLineI = std::stoi(readCounter());
-			switch (action)
-			{
-				case 0:
-					firstLineI = firstLineI - amount;
-					break;
-				case 1:
-					firstLineI = firstLineI + amount;
-					break;
-			}
-			std::ofstream booksOut("counter.txt");
-			if (!booksOut.is_open())
-			{
-				throw std::runtime_error("Failed to open counter file for writing.");
-			}
-			booksOut << firstLineI;
-			booksOut.close();
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in UpdateCounter function: " << ex.what() << std::endl;
-		}
-	}
-
-	std::string toLower(std::string searchTerm)
-	{
-		try
-		{
-			std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), [](unsigned char c)
-			{
-				return std::tolower(c);
-			});
-			return searchTerm;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in toLower function: " << ex.what() << std::endl;
-			return searchTerm;
-		}
-	}
-
-	std::string getSearchTerm()
-	{
-		try
-		{
-			std::string searchTerm;
-			std::cout << "search for book: ";
-			std::cin >> searchTerm;
-			std::cout << "=========================================================" << std::endl;
-			return searchTerm;
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in getSearchTerm function: " << ex.what() << std::endl;
-			return "";
-		}
-	}
-
-	void Search()
-	{
-		try
-		{
-			std::string searchTerm, filename, foundFileName;
-			searchTerm = toLower(getSearchTerm());
-			int booksFound = 0;
-			for (const auto &entry: std::filesystem::directory_iterator("books/"))
-			{
-				filename = entry.path().filename().string();
-				if (filename.find(searchTerm) != std::string::npos)
-				{
-					foundFileName = filename;
-					std::cout << std::setw(19) << std::left << getExactLine(filename, 2) << std::setw(19) << std::left
-							  << getExactLine(filename, 3) << std::setw(19) << std::right << getExactLine(filename, 5) << std::endl;
-					booksFound++;
-				}
-			}
-			std::cout << "=========================================================" << std::endl;
-			if (booksFound == 1)
-			{
-				displayDetails(foundFileName);
-				Book::Buy(foundFileName);
-			}
-			else
-			{
-				std::cout << booksFound << " different results found. please specify further!" << std::endl;
-			}
-		} catch (const std::exception &ex)
-		{
-			std::cerr << "Error in Search function: " << ex.what() << std::endl;
-		}
+		std::cerr << "Error in Restock function: " << ex.what() << std::endl;
 	}
 }
